@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /d/
+
+Sitemap: https://termdrop.sh/sitemap.xml

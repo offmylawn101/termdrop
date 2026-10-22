@@ -1,0 +1,2 @@
+TermDrop streaming test fixture.
+This file should arrive byte-for-byte unchanged.

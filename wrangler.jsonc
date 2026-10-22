@@ -1,0 +1,86 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "termdrop",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-08-26",
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "termdrop.sh",
+      "custom_domain": true
+    }
+  ],
+  "dev": {
+    "host": "127.0.0.1:8787",
+    "ip": "127.0.0.1",
+    "port": 8787
+  },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*", "/d/*"]
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "TRANSFER_SESSIONS",
+        "class_name": "TransferSession"
+      },
+      {
+        "name": "IP_LIMITERS",
+        "class_name": "IpLimiter"
+      },
+      {
+        "name": "TRANSFER_STATS",
+        "class_name": "TransferStats"
+      },
+      {
+        "name": "AD_AUCTION",
+        "class_name": "AdAuction"
+      }
+    ]
+  },
+  "r2_buckets": [
+    {
+      "binding": "AD_SPONSOR_CREATIVES",
+      "bucket_name": "termdrop-ad-creatives"
+    }
+  ],
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["TransferSession", "IpLimiter"]
+    },
+    {
+      "tag": "v2",
+      "new_sqlite_classes": ["TransferStats"]
+    },
+    {
+      "tag": "v3",
+      "new_sqlite_classes": ["AdAuction", "AdCreative"]
+    },
+    {
+      "tag": "v4",
+      "deleted_classes": ["AdCreative"]
+    }
+  ],
+  "vars": {
+    "PUBLIC_BASE_URL": "",
+    "MAX_FILE_SIZE_BYTES": "5368709120",
+    "SESSION_TTL_MS": "600000",
+    "RECEIVER_START_TIMEOUT_MS": "90000",
+    "TRANSFER_IDLE_TIMEOUT_MS": "30000",
+    "MAX_TRANSFER_DURATION_MS": "21600000",
+    "TOMBSTONE_TTL_MS": "86400000",
+    "MAX_ACTIVE_TRANSFERS_PER_IP": "5",
+    "SESSION_RATE_LIMIT": "10",
+    "SESSION_RATE_WINDOW_MS": "60000",
+    "AD_NOTIFICATION_TO": "nate@maxbid.biz",
+    "AD_NOTIFICATION_FROM": "TermDrop <notifications@fister.fun>"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
